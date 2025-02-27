@@ -57,11 +57,23 @@ int main(int argc, char **argv) {
         const char *first_token = strvec_get(&tokens, 0);
 
         if (strcmp(first_token, "pwd") == 0) {
+            char cwd[CMD_LEN];
+            if(getcwd(cwd, sizeof(cwd)) != NULL) {
+                printf("%s\n", cwd);
+            } else {
+                perror("cwd");
+            }
             // TODO Task 1: Print the shell's current working directory
             // Use the getcwd() system call
         }
 
         else if (strcmp(first_token, "cd") == 0) {
+            const char *dir = (tokens.length > 1) ? strvec_get(&tokens, 1) : getenv("HOME");
+            if (dir == NULL) {
+                fprintf(stderr, "cd: HOME not set\n");
+            } else if (chdir(dir) != 0) {
+                perror("chdir");
+            }
             // TODO Task 1: Change the shell's current working directory
             // Use the chdir() system call
             // If the user supplied an argument (token at index 1), change to that directory
