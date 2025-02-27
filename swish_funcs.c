@@ -44,6 +44,71 @@ int run_command(strvec_t *tokens) {
     // Another Hint: You have a guarantee of the longest possible needed array, so you
     // won't have to use malloc.
 
+    int argc = tokens->length;
+    char *argv[argc+1];
+
+    // redirection file descriptor
+    int fd = -1;
+    int skip_index = -1;
+
+    // locates a redirection file operator and sets index
+    for (int i = 0; i < argc; i++) {
+        if (i + 1 < argc) {
+            if (strcmp(tokens->data[i], ">") == 0) {
+                fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+            } else if (strcmp(tokens->data[i], ">>") == 0) {
+                fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+            } else if (strcmp(tokens->data[i], "<") == 0) {
+                fd = open(tokens->data[i + 1], O_RDONLY);
+            }
+            skip_index = i;
+            break;
+        }
+    }
+
+    // perform file redirection if necessary
+    if (fd != -1) {
+        if (strcmp(tokens->data[skip_index], "<") == 0) {
+            dup2(fd, STDIN_FILENO);
+        } else {
+            dup2(fd, STDOUT_FILENO);
+        }
+        close(fd);
+        // if we need to skip the redirecting arguments
+        int j = 0;
+        for (int i = 0; i < argc; i++) {
+            if (!(i == skip_index || i == skip_index + 1)) {
+                argv[j] = tokens->data[i];
+                j++;
+            }
+        }
+        argv[j] = NULL;
+    } else {
+        int i = 0;
+        for (; i < argc; i++) {
+            argv[i] = tokens->data[i];
+        }
+        argv[i] = NULL;
+    }
+
+    struct sigaction sa;
+    sa.sa_handler = SIG_DFL;
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGTTOU, &sa, NULL);
+    sigaction(SIGTTIN, &sa, NULL);
+
+    // Change process group
+    pid_t pid = getpid();
+    setpgid(pid, pid);
+
+    // Execute command
+    execvp(argv[0], argv);
+
+    // If execvp fails, print error and exit
+    perror("exec");
+    _exit(1);
+
     // TODO Task 3: Extend this function to perform output redirection before exec()'ing
     // Check for '<' (redirect input), '>' (redirect output), '>>' (redirect and append output)
     // entries inside of 'tokens' (the strvec_find() function will do this for you)
