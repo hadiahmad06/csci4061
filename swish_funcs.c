@@ -20,6 +20,15 @@
 
 int tokenize(char *s, strvec_t *tokens) {
     // TODO Task 0: Tokenize string s
+
+    const char *delim = " ";
+    char *curr = strtok(s, delim);
+
+    while(curr != NULL) {
+        strvec_add(tokens, curr);
+        curr = strtok(NULL, delim);
+    }
+
     // Assume each token is separated by a single space (" ")
     // Use the strtok() function to accomplish this
     // Add each token to the 'tokens' parameter (a string vector)
