@@ -132,6 +132,20 @@ int main(int argc, char **argv) {
         }
 
         else {
+            pid_t pid = fork();
+            if (pid == -1) {
+                perror("fork");
+                strvec_clear(&tokens);
+                job_list_free(&jobs);
+                return 1;
+            }
+
+            if (pid == 0) {
+                run_command(&tokens);
+            } else {
+                int status;
+                waitpid(pid, &status, 0);
+            }
             // TODO Task 2: If the user input does not match any built-in shell command,
             // treat the input as a program name and command-line arguments
             // USE THE run_command() FUNCTION DEFINED IN swish_funcs.c IN YOUR IMPLEMENTATION
