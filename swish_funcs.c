@@ -47,49 +47,67 @@ int run_command(strvec_t *tokens) {
     int argc = tokens->length;
     char *argv[argc+1];
 
-    // redirection file descriptor
-    int fd = -1;
-    int skip_index = -1;
+    // redirection file descriptors
+    int input_fd = -1;
+    int output_fd = -1;
+    int skip_indices[4] = {-1,-1,-1,-1};
+    int skip_count = 0;
 
     // locates a redirection file operator and sets index
     for (int i = 0; i < argc; i++) {
         if (i + 1 < argc) {
             if (strcmp(tokens->data[i], ">") == 0) {
-                fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+                output_fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+                if (output_fd == -1) {
+                    perror("Failed to open output file");
+                    return -1;
+                }
             } else if (strcmp(tokens->data[i], ">>") == 0) {
-                fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+                output_fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+                if (output_fd == -1) {
+                    perror("Failed to open output file");
+                    return -1;
+                }
             } else if (strcmp(tokens->data[i], "<") == 0) {
-                fd = open(tokens->data[i + 1], O_RDONLY);
+                input_fd = open(tokens->data[i + 1], O_RDONLY);
+                if (input_fd == -1) {
+                    perror("Failed to open input file");
+                    return -1;
+                }
             }
-            skip_index = i;
-            break;
+            if (output_fd != -1 || input_fd != -1) {
+                skip_indices[skip_count++] = i;
+                skip_indices[skip_count++] = i + 1;
+            }
         }
     }
 
     // perform file redirection if necessary
-    if (fd != -1) {
-        if (strcmp(tokens->data[skip_index], "<") == 0) {
-            dup2(fd, STDIN_FILENO);
-        } else {
-            dup2(fd, STDOUT_FILENO);
-        }
-        close(fd);
-        // if we need to skip the redirecting arguments
-        int j = 0;
-        for (int i = 0; i < argc; i++) {
-            if (!(i == skip_index || i == skip_index + 1)) {
-                argv[j] = tokens->data[i];
-                j++;
+    if (input_fd != -1) {
+        dup2(input_fd, STDIN_FILENO);
+        close(input_fd);
+    }
+    if (output_fd != -1) {
+        dup2(output_fd, STDOUT_FILENO);
+        close(output_fd);
+    }
+
+    // skip redirection tokens
+    int j = 0;
+    for (int i = 0; i < argc; i++) {
+        int skip = 0;
+        for (int k = 0; k < skip_count; k++) {
+            if (i == skip_indices[k]) {
+                skip = 1;
+                break;
             }
         }
-        argv[j] = NULL;
-    } else {
-        int i = 0;
-        for (; i < argc; i++) {
-            argv[i] = tokens->data[i];
+        if (!skip) {
+            argv[j] = tokens->data[i];
+            j++;
         }
-        argv[i] = NULL;
     }
+    argv[j] = NULL;
 
     struct sigaction sa;
     sa.sa_handler = SIG_DFL;
@@ -98,14 +116,14 @@ int run_command(strvec_t *tokens) {
     sigaction(SIGTTOU, &sa, NULL);
     sigaction(SIGTTIN, &sa, NULL);
 
-    // Change process group
+    // change process group
     pid_t pid = getpid();
     setpgid(pid, pid);
 
-    // Execute command
+    // executes command
     execvp(argv[0], argv);
 
-    // If execvp fails, print error and exit
+    // error check
     perror("exec");
     _exit(1);
 
