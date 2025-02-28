@@ -74,8 +74,9 @@ int main(int argc, char **argv) {
         }
 
         else if (strcmp(first_token, "exit") == 0) {
-            strvec_clear(&tokens);
-            break;
+            strvec_clear(&tokens);  // Clear the tokens
+            job_list_free(&jobs);   // Free the job list
+            return 0;               // Exit the shell immediately
         }
 
         // Task 5: Print out current list of pending jobs
