@@ -1,0 +1,15 @@
+==1391585== Memcheck, a memory error detector
+==1391585== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==1391585== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1391585== Command: ./swish
+==1391585== Parent PID: 1391538
+==1391585== 
+==1391585== 
+==1391585== HEAP SUMMARY:
+==1391585==     in use at exit: 0 bytes in 0 blocks
+==1391585==   total heap usage: 10 allocs, 10 frees, 2,219 bytes allocated
+==1391585== 
+==1391585== All heap blocks were freed -- no leaks are possible
+==1391585== 
+==1391585== For lists of detected and suppressed errors, rerun with: -s
+==1391585== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
