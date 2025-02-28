@@ -136,6 +136,7 @@ int main(int argc, char **argv) {
             if (pid == 0) {
                 // Child process: Run the command
                 run_command(&tokens);
+                exit(EXIT_FAILURE);
             } else {
                 // Parent process: Handle job control
 
