@@ -126,6 +126,13 @@ int main(int argc, char **argv) {
         }
 
         else {
+            // checks for & at end of cmd (background job)
+            int is_background = 0;
+            if (tokens.length > 0 && strcmp(strvec_get(&tokens, tokens.length - 1), "&") == 0) {
+                is_background = 1;
+                strvec_take(&tokens, tokens.length - 1); // removes & from tokens
+            }
+
             pid_t pid = fork();
             if (pid == -1) {
                 perror("fork");
@@ -142,12 +149,7 @@ int main(int argc, char **argv) {
             } else {
                 // parent handles jobs
 
-                // checks for & at end of cmd (background job)
-                int is_background = 0;
-                if (tokens.length > 0 && strcmp(strvec_get(&tokens, tokens.length - 1), "&") == 0) {
-                    is_background = 1;
-                    strvec_take(&tokens, tokens.length - 1); // removes & from tokens
-                }
+
 
                 if (!is_background) {
                     // sets child process to foreground process group
