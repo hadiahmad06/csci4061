@@ -65,6 +65,7 @@ int main(int argc, char **argv) {
         }
 
         else if (strcmp(first_token, "cd") == 0) {
+            // if parameter given, dir = parameter, else, use NULL
             const char *dir = (tokens.length > 1) ? strvec_get(&tokens, 1) : getenv("HOME");
             if (dir == NULL) {
                 fprintf(stderr, "cd: HOME not set\n");
@@ -74,9 +75,9 @@ int main(int argc, char **argv) {
         }
 
         else if (strcmp(first_token, "exit") == 0) {
-            strvec_clear(&tokens);  // Clear the tokens
-            job_list_free(&jobs);   // Free the job list
-            return 0;               // Exit the shell immediately
+            strvec_clear(&tokens);
+            break;
+            // ends loop and clears tokens
         }
 
         // Task 5: Print out current list of pending jobs
@@ -134,48 +135,48 @@ int main(int argc, char **argv) {
             }
 
             if (pid == 0) {
-                // Child process: Run the command
+                // exec in child process
                 run_command(&tokens);
                 exit(EXIT_FAILURE);
+                // if exec fails, exit the child process
             } else {
-                // Parent process: Handle job control
+                // parent handles jobs
 
-                // Check if the command should run in the background
+                // checks for & at end of cmd (background job)
                 int is_background = 0;
                 if (tokens.length > 0 && strcmp(strvec_get(&tokens, tokens.length - 1), "&") == 0) {
                     is_background = 1;
-                    strvec_take(&tokens, tokens.length - 1); // Remove the "&" token
+                    strvec_take(&tokens, tokens.length - 1); // removes & from tokens
                 }
 
                 if (!is_background) {
-                    // Foreground job: Set the child as the foreground process group
+                    // sets child process to foreground process group
                     if (tcsetpgrp(STDIN_FILENO, pid) == -1) {
                         perror("tcsetpgrp");
                     }
 
-                    // Wait for the child process to finish or stop
+                    // waits for child process to stop
                     int status;
                     if (waitpid(pid, &status, WUNTRACED) == -1) {
                         perror("waitpid");
                     }
 
-                    // Restore the shell as the foreground process group
+                    // when finished, sets parent (shell) process to foreground process group
                     if (tcsetpgrp(STDIN_FILENO, getpid()) == -1) {
                         perror("tcsetpgrp");
                     }
 
-                    // If the child was stopped, add it to the job list
+                    // if child was stopped, add to job list with stopped status
                     if (WIFSTOPPED(status)) {
                         job_list_add(&jobs, pid, strvec_get(&tokens, 0), STOPPED);
                     }
                 } else {
-                    // Background job: Add it to the job list
+                    // add child process to job list with background status
                     job_list_add(&jobs, pid, strvec_get(&tokens, 0), BACKGROUND);
                 }
             }
         }
 
-        // Print the prompt only if the command was successful
         printf("%s", PROMPT);
         strvec_clear(&tokens);
     }

@@ -163,46 +163,46 @@ int resume_job(strvec_t *tokens, job_list_t *jobs, int is_foreground) {
     pid_t shell_pid = getpid();
 
     if (is_foreground) {
-        // Set the job's process group as the foreground process group
+        // set job's process group to the foreground process group
         if (tcsetpgrp(STDIN_FILENO, job_pid) == -1) {
             perror("tcsetpgrp");
             return -1;
         }
 
-        // Send SIGCONT to the job's process group
+        // send SIGCONT to the job's process group
         if (kill(-job_pid, SIGCONT) == -1) {
             perror("kill");
             return -1;
         }
 
-        // Wait for the job to finish or stop
+        // waitpid with WUNTRACED (gets status even if process was terminated)
         int status;
         if (waitpid(job_pid, &status, WUNTRACED) == -1) {
             perror("waitpid");
             return -1;
         }
 
-        // Restore the shell's process group as the foreground process group
+        // when finished, sets parent (shell) process to foreground process group
         if (tcsetpgrp(STDIN_FILENO, shell_pid) == -1) {
             perror("tcsetpgrp");
             return -1;
         }
 
         if (WIFEXITED(status) || WIFSIGNALED(status)) {
-            // Job has terminated, remove it from the jobs list
+            // if job was terminated, remove it from the jobs list
             job_list_remove(jobs, job_index);
         } else if (WIFSTOPPED(status)) {
-            // Job has stopped again, update its status
+            // if job stopped again, update its status to STOPPED
             job->status = STOPPED;
         }
     } else {
-        // Resume the job in the background
+        // resume the job in the background
         if (kill(-job_pid, SIGCONT) == -1) {
             perror("kill");
             return -1;
         }
 
-        // Update the job's status to BACKGROUND
+        // update the job's status to BACKGROUND
         job->status = BACKGROUND;
     }
 
@@ -222,20 +222,20 @@ int await_background_job(strvec_t *tokens, job_list_t *jobs) {
         return -1;
     }
 
-    // Check if the job is a background job
+    // check that job is a background job
     if (job->status != BACKGROUND) {
         fprintf(stderr, "Job index is for stopped process not background process\n"); // Correct error message
         return -1;
     }
 
-    // Wait for the background job to finish or stop
+    // waitpid with WUNTRACED (gets status even if process was terminated)
     int status;
     if (waitpid(job->pid, &status, WUNTRACED) == -1) {
         perror("waitpid");
         return -1;
     }
 
-    // If the job has terminated, remove it from the jobs list
+    // if the job terminated, remove it from the jobs list
     if (WIFEXITED(status) || WIFSIGNALED(status)) {
         job_list_remove(jobs, job_index);
     }
@@ -245,33 +245,29 @@ int await_background_job(strvec_t *tokens, job_list_t *jobs) {
 
 int await_all_background_jobs(job_list_t *jobs) {
     if (jobs == NULL || jobs->head == NULL) {
-        // No jobs to wait for
+        // no jobs to wait for
         return 0;
     }
 
-    // Step 1: Iterate through the jobs list, ignoring stopped jobs
+    // checks through jobs list, ignoring stopped jobs
     job_t *current = jobs->head;
     while (current != NULL) {
         if (current->status == BACKGROUND) {
-            // Step 2: Call waitpid() with WUNTRACED for background jobs
             int status;
+            // waitpid with WUNTRACED (gets status even if process was terminated)
             if (waitpid(current->pid, &status, WUNTRACED) == -1) {
                 perror("waitpid");
                 return -1;
             }
-
-            // Step 3: Handle stopped jobs
+            // if the job stopped, change its status to STOPPED
             if (WIFSTOPPED(status)) {
-                // If the job has stopped, change its status to STOPPED
                 current->status = STOPPED;
             }
         }
-
-        // Move to the next job
         current = current->next;
     }
 
-    // Step 4: Remove all terminated background jobs from the jobs list
+    // remove all terminated background jobs from the jobs list
     job_list_remove_by_status(jobs, BACKGROUND);
 
     return 0;
