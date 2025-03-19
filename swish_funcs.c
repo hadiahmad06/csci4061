@@ -24,7 +24,7 @@ int tokenize(char *s, strvec_t *tokens) {
     const char *delim = " ";
     char *curr = strtok(s, delim);
 
-    while(curr != NULL) {
+    while (curr != NULL) {
         strvec_add(tokens, curr);
         curr = strtok(NULL, delim);
     }
@@ -45,25 +45,27 @@ int run_command(strvec_t *tokens) {
     // won't have to use malloc.
 
     int argc = tokens->length;
-    char *argv[argc+1];
+    char *argv[argc + 1];
 
     // redirection file descriptors
     int input_fd = -1;
     int output_fd = -1;
-    int skip_indices[4] = {-1,-1,-1,-1};
+    int skip_indices[4] = {-1, -1, -1, -1};
     int skip_count = 0;
 
     // locates a redirection file operator and sets index
     for (int i = 0; i < argc; i++) {
         if (i + 1 < argc) {
             if (strcmp(tokens->data[i], ">") == 0) {
-                output_fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+                output_fd =
+                    open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
                 if (output_fd == -1) {
                     perror("Failed to open output file");
                     return -1;
                 }
             } else if (strcmp(tokens->data[i], ">>") == 0) {
-                output_fd = open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+                output_fd =
+                    open(tokens->data[i + 1], O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
                 if (output_fd == -1) {
                     perror("Failed to open output file");
                     return -1;
@@ -76,6 +78,7 @@ int run_command(strvec_t *tokens) {
                 }
             }
             if (output_fd != -1 || input_fd != -1) {
+                // will skip the redirection cmd line argument as well as the name of the file
                 skip_indices[skip_count++] = i;
                 skip_indices[skip_count++] = i + 1;
             }
@@ -143,7 +146,8 @@ int run_command(strvec_t *tokens) {
     // Call getpid() to get its process ID then call setpgid() and use this process
     // ID as the value for the new process group ID
 
-    return 0;
+    // shouldnt return, instead exits child process without exiting function call
+    // return 0;
 }
 
 int resume_job(strvec_t *tokens, job_list_t *jobs, int is_foreground) {
@@ -224,7 +228,9 @@ int await_background_job(strvec_t *tokens, job_list_t *jobs) {
 
     // check that job is a background job
     if (job->status != BACKGROUND) {
-        fprintf(stderr, "Job index is for stopped process not background process\n"); // Correct error message
+        fprintf(stderr,
+                "Job index is for stopped process not background process\n");    // Correct error
+                                                                                 // message
         return -1;
     }
 

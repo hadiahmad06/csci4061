@@ -149,8 +149,6 @@ int main(int argc, char **argv) {
             } else {
                 // parent handles jobs
 
-
-
                 if (!is_background) {
                     // sets child process to foreground process group
                     if (tcsetpgrp(STDIN_FILENO, pid) == -1) {
