@@ -1,0 +1,156 @@
+                           __________________
+
+                            LAB 04 QUESTIONS
+                           __________________
+
+Lab Instructions
+================
+
+  Follow the instructions below to experiment with topics related to this lab.
+  - For sections marked QUIZ, fill in an (X) for the appropriate
+    response in this file. Use the command `make test-quiz' to see if
+    all of your answers are correct.
+  - For sections marked CODE, complete the code indicated. Use the
+    command `make test-code' to check if your code is complete.
+  - DO NOT CHANGE any parts of this file except the QUIZ sections as it
+    may interfere with the tests otherwise.
+  - If your `QUESTIONS.txt' file seems corrupted, restore it by copying
+    over the `QUESTIONS.txt.bak' backup file.
+  - When you complete the exercises, check your answers with `make test'
+    and if all is well, create a zip file with `make zip' and upload it
+    to Gradescope. Ensure that the Autograder there reflects your local
+    results.
+  - IF YOU WORK IN A GROUP only one member needs to submit and then add
+    the names of their group.
+
+  In this lab, you will first read and execute the code in 'switch_stdout.c' to
+  answer the quiz questions below. Then, you will complete the second part of
+  the lab assignment by adding code to the 'redirect_child.c' file.
+
+
+QUIZ Questions on switch_stdout.c
+=================================
+
+  Analyze the 'switch_stdout.c' program. Compile and run it via
+  ,----
+  | > make switch_stdout
+  | ...
+  | > ./switch_stdout
+  | ...
+  `----
+
+  Analyze the code and focus your attention on the use of 'open()' /
+  'dup()' / 'dup2()' which this program demonstrates.
+
+  Answer the following questions about the techniques used in this
+  program. You may need to consult the Manual Page / Documentation on
+  some functions to answer confidently.
+
+
+Program Output
+~~~~~~~~~~~~~~
+
+  Which of the following is the output for 'switch_stdout' when run?
+  (each of 1. 2. 3. appear on separate lines in the output)
+  - ( ) 1. Now you see me. 2. Now you don't!  3. How mysterious...
+  - ( ) 1. Now you see me. 2. Now you don't!
+  - (X) 1. Now you see me. 3. How mysterious...
+  - ( ) 1. Now you see me.
+
+
+open() system call
+~~~~~~~~~~~~~~~~~~
+
+  The 'open()' system call is used to open a file for writing in the
+  example.  What is returned by this system call?
+  - ( ) A `FILE *' which is passed to subsequent I/O operations or
+    'NULL' for failure
+  - (X) An integer file descriptor which is >= 0 for success and -1 for
+    failure
+  - ( ) An integer return code that is 1 for success and 0 for failure
+  - ( ) A `char *' which is the name of the opened file or `NULL' for
+    failure
+
+
+Use of dup()
+~~~~~~~~~~~~
+
+  Which of the following best describes how the 'dup()' system call is
+  used in 'switch_stdout.c'?
+  - (X) It creates a duplicate of a file descriptor allowing standard
+    output to be restored to the screen later in the program.
+  - ( ) It manipulates the file descriptor table so output that would go
+    to the screen goes into a file instead.
+  - ( ) It duplicates an existing file creating an efficient copy of it
+    on disk.
+  - ( ) It creates a child process that prints to a file instead of the
+    screen.
+
+
+Use of dup2()
+~~~~~~~~~~~~~
+
+  Which of the following best describes how the 'dup2()' system call is
+  used in 'switch_stdout.c'?
+  - ( ) It creates a duplicate of a file descriptor allowing standard
+    output to be restored to the screen later in the program.
+  - (X) It manipulates the file descriptor table so output that would go
+    to the screen goes into a file instead.
+  - ( ) It duplicates an existing file creating an efficient copy of it
+    on disk.
+  - ( ) It creates a child process that prints to a file instead of the
+    screen.
+
+
+printf() changes in behavior
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Good old 'printf()' is used in 'switch_stdout.c' in several places but
+  seems to change its behavior in some of these spots. Which of the
+  following best describes this variation in behavior?
+  - ( ) 'printf()' is called with different arguments that cause it to
+    print to different destinations: Sometimes to standard output and
+    sometimes a file.
+  - ( ) 'printf()' is called the same way in each case but automatically
+    begins printing to a file that is opened and when the file is
+    closed, 'printf()' reverts to printing to the screen
+  - (X) 'printf()' is called the same way in each case and always prints to
+    standard output but by changing what is in the file descriptor table
+    at that position, output goes to the screen or to a file.
+
+
+CODE Complete redirect_child.c
+==============================
+
+  An incomplete file called 'redirect_child.c' is present in the code
+  pack which is intended to preform the following operations.
+  1. Create a child process
+  2. The child process redirects its output into a file
+  3. The child process then exec()'s a new program image which will
+     place output in the file specified
+  4. The parent process blocks until the child is complete and then
+     shows the output file.
+
+  A skeleton is provided but a number of TODO items must be filled
+  into to complete the program. A number of the techniques are required
+  to complete the code
+    - Process manipulation from previous labs
+    - I/O redirection demonstrated in this lab in 'switch_stdout.c'
+
+  Employ these to complete the program and pass the tests available in
+  'make test-code'.
+
+  A correct run looks like the following.
+  ,----
+  | > make
+  | gcc -Wall -Werror -g  -o switch_stdout switch_stdout.c
+  | gcc -Wall -Werror -g  -o redirect_child redirect_child.c
+  |
+  | > ./redirect_child
+  | usage: ./redirect_child <childfile>
+  |
+  | > ./redirect_child childout.txt
+  | Child complete, return code 0
+  | > cat childout.txt
+  | 25 25 66 test_cases/resources/nums.txt
+  `----

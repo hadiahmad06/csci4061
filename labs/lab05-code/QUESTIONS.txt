@@ -1,0 +1,114 @@
+                           __________________
+
+                            LAB 05 QUESTIONS
+                           __________________
+
+Lab Instructions
+================
+
+  Follow the instructions below to experiment with topics related to this lab.
+  - For sections marked QUIZ, fill in an (X) for the appropriate
+    response in this file. Use the command `make test-quiz' to see if
+    all of your answers are correct.
+  - For sections marked CODE, complete the code indicated. Use the
+    command 'make test-code' to check if your code is complete.
+  - DO NOT CHANGE any parts of this file except the QUIZ sections as it
+    may interfere with the tests otherwise.
+  - If your 'QUESTIONS.txt' file seems corrupted, restore it by copying
+    over the 'QUESTIONS.txt.bak' backup file.
+  - When you complete the exercises, check your answers with 'make test'
+    and if all is well, create a zip file with `make zip' and upload it
+    to Gradescope. Ensure that the Autograder there reflects your local
+    results.
+  - IF YOU WORK IN A GROUP only one member needs to submit and then add
+    the names of their group.
+
+  In this lab, you will first read and execute the code in 'print_nums.c' to
+  answer the quiz questions below. Then, you will complete the second part of
+  the lab assignment by adding code to the 'tokenize_sentence.c' file.
+
+
+QUIZ Program Management in the Shell
+====================================
+
+  Compile and run the 'print_nums.c' program. If you study its code, you will
+  see that it prints out increasing numbers in an infinite loop.
+  ,----
+  | > make print_nums
+  | > ./print_nums
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | ...
+  `----
+
+  Which of the following will allow you to terminate this seemingly endless
+  program?
+  - ( ) Hit the 'Escape' key.
+  - ( ) Hit the 'q' key.
+  - (X) Type 'Ctrl-C'.
+  - ( ) Wait patiently and hope for the best.
+
+  Now, run 'print_nums' again, but this time type 'Ctrl-Z' after letting the
+  program run for a bit. You will see that 'print_nums' is considered "Stopped"
+  by the shell.  Finally, type the command "jobs" in to your shell. Which of
+  the following best describes what this command does?
+  - ( ) Shows a list of all programs run previously in this terminal session.
+  - (X) Shows a list of programs that have been stopped previously or are
+        active in the background in this terminal session.
+  - ( ) Shows a list of programs that were forcibly terminated in this terminal
+        session.
+  - ( ) Prints out information about Steve Jobs.
+
+  The terminal allows you to perform a variety of actions against stopped jobs.
+  Run the command 'fg %1'. What do you notice about the numbers being printed
+  out by the program now?
+  - ( ) They start over at 0 and increase as they did before.
+  - (X) They resume increasing from where 'print_nums' previously left off.
+  - ( ) The numbers begin decreasing rather than increasing.
+  - ( ) None of the above
+
+  Use 'Ctrl-Z' to stop the 'print_nums' program one more time. Finally, run the
+  command 'kill %1' in your terminal. (You sometimes need to hit the 'ENTER'
+  key one more time for the effect of the kill command to be printed to the
+  screen.) Which of the following best describes what this command does?
+  - ( ) Signals the program with the name "%1", causing it to terminate.
+  - ( ) Signals the program with the PID 1, causing it to terminate.
+  - (X) Signals the first job in our terminal session ('print_nums'), causing
+        it to terminate.
+  - ( ) Signals all processes with a PID ending with a '1' digit.
+
+
+CODE Complete tokenize_sentence.c
+=================================
+
+  An incomplete file called 'tokenize_sentence.c' is present in the code
+  pack which is intended to perform basic string tokenization.
+
+  The 'main()' function in this file is already written for you. It
+  repeatedly prompts the user to type in a sentence from the command
+  line in a loop. If the user types in "exit", the program ends. Otherwise,
+  it calls the 'print_words()' function with the input sentence as an
+  argument.
+
+  Your task is to complete the code for 'print_words()'. Your code should
+  extract each word in the sentence and print that word on its own line.
+
+  You may assume that words are separated by a single space and you don't need
+  to deal with issues around punctuation.
+
+  A correct run looks like the following.
+  ,----
+  | > make
+  | gcc -Wall -Werror -g -o tokenize_sentence tokenize_sentence.c
+  |
+  | > ./tokenize_sentence
+  | sentence> This is Lab 5.
+  | This
+  | is
+  | Lab
+  | 5.
+  | sentence> exit
+  `----

@@ -1,0 +1,7 @@
+Cumulative Sum: 4
+Cumulative Sum: 12
+Cumulative Sum: 27
+Cumulative Sum: 43
+Cumulative Sum: 66
+Cumulative Sum: 108
+Cumulative Sum: 216

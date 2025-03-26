@@ -1,0 +1,9 @@
+list> size
+list> insert Mario
+list> size
+list> insert Luigi
+list> size
+list> insert Toad
+list> size
+list> print
+list> exit

@@ -1,0 +1,25 @@
+Linked List Demo
+Commands:
+  print:          shows the current contents of the list
+  clear:          eliminates all elements from the list
+  exit:           exit the program
+  insert thing:   inserts the given string into the list
+  size:           prints the size of the list
+  get index:      get the item at the given index
+  contains thing: determine if the given thing is in the list
+list> size
+0
+list> insert Mario
+list> size
+1
+list> insert Luigi
+list> size
+2
+list> insert Toad
+list> size
+3
+list> print
+0: Mario
+1: Luigi
+2: Toad
+list> exit

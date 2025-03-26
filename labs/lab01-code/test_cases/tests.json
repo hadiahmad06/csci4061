@@ -1,0 +1,48 @@
+{
+    "name": "Lab 01",
+    "tests": [
+        {
+            "name": "Quiz - QUESTIONS.txt",
+            "description": "Check if the answers in QUESTIONS.txt are correct. This file must be edited so that the correct ( ) choices are replaced with (X) and no other changes are made to the file.",
+            "command": "test_cases/resources/socrates QUESTIONS.txt -c test_cases/resources/quiz_sum.json -a",
+            "output_file": "test_cases/output/quiz.txt",
+            "points": 0.5
+        },
+        {
+            "name": "List - Print and Exit",
+            "description": "Print the empty list and exit",
+            "command": "./list_main",
+            "prompt": "list>",
+            "input_file": "test_cases/input/print_exit.txt",
+            "output_file": "test_cases/output/print_exit.txt",
+            "points": 0.125
+        },
+        {
+            "name": "List - Insert 3 and Print",
+            "description": "Add several items, check list size and print them back",
+            "command": "./list_main",
+            "prompt": "list>",
+            "input_file": "test_cases/input/insert_print.txt",
+            "output_file": "test_cases/output/insert_print.txt",
+            "points": 0.125
+        },
+        {
+            "name": "List - Get Command",
+            "description": "Checks that the ~get N~ command works correct to return value at Nth index of the list.",
+            "command": "./list_main",
+            "prompt": "list>",
+            "input_file": "test_cases/input/get.txt",
+            "output_file": "test_cases/output/get.txt",
+            "points": 0.125
+        },
+        {
+            "name": "List - Contains Items",
+            "description": "Add several items then print them back",
+            "command": "./list_main",
+            "prompt": "list>",
+            "input_file": "test_cases/input/contains_items.txt",
+            "output_file": "test_cases/output/contains_items.txt",
+            "points": 0.125
+        }
+    ]
+}

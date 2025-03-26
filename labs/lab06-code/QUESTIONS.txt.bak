@@ -1,0 +1,87 @@
+                           __________________
+
+                            LAB 06 QUESTIONS
+                           __________________
+
+Lab Instructions
+================
+
+  Follow the instructions below to experiment with topics related to
+  this lab.
+  - For sections marked QUIZ, fill in an (X) for the appropriate
+    response in this file. Use the command 'make test-quiz' to see if
+    all of your answers are correct.
+  - For sections marked CODE, complete the code indicated. Use the
+    command 'make test-code' to check if your code is complete.
+  - DO NOT CHANGE any parts of this file except the QUIZ sections as it
+    may interfere with the tests otherwise.
+  - If your 'QUESTIONS.txt' file seems corrupted, restore it by copying
+    over the 'QUESTIONS.txt.bk' backup file.
+  - When you complete the exercises, check your answers with 'make test'
+    and if all is well, create a zip file with 'make zip' and upload it
+    to Gradescope. Ensure that the Autograder there reflects your local
+    results.
+  - IF YOU WORK IN A GROUP only one member needs to submit and then add
+    the names of their group.
+
+
+QUIZ Questions sigaction() function
+===================================
+
+  Which of the following options must be set in the 'struct sigaction' to
+  indicate that on receiving a signal, system calls should be restarted
+  automatically? You may wish to consult the manual page for 'sigaction()'.
+
+  - ( ) SA_AGAIN
+  - ( ) SA_SYSCALL
+  - ( ) SA_RESTART
+  - ( ) SA_RESETHAND
+
+  How does one indicate that a custom handler function should be run
+  when a signal is received using the 'sigaction()' function?
+  - ( ) The 'sa_handler' field of a 'struct sigaction' is set to the
+    function and the struct is passed to 'sigaction()'.
+  - ( ) A pointer to the function is passed as an argument to 'sigaction()'.
+  - ( ) Global functions which start with the name 'handler_...()' are
+    automatically assigned to be signal handlers.
+  - ( ) Trick question: the 'sigaction()' function cannot be used to set
+    up a signal handler.
+
+  An easy way to convey that a signal has been received from the signal
+  handling function to the main body of code is:
+  - ( ) To send a second signal to the process within the signal handler
+  - ( ) To call a recursive function defined by the code
+  - ( ) To call 'printf()' to print out that the signal has been caught
+  - ( ) To change the value of a global variable
+
+
+CODE Complete wc_signal.c
+=========================
+
+  Complete the code in 'wc_signal.c' so that the program catches
+  'SIGINT' and prints its current counts prior to shutting down as shown
+  in the demo below. Sections to do so are marked as TODO.
+
+  If you'd like to run 'wc_signal' yourself:
+  - The program will read from stdin by default, meaning you can type in
+    text in the terminal to be processed by the program.
+  - To tell the program that the input has ended (basically, inputting an EOF),
+    type <Ctrl>-D.
+  - To send the program a SIGINT signal, type <Ctrl>-C.
+  - Note: wc_signal will check for SIGINT after reading each line of input. So,
+    you may have to input one more line of text after <Ctrl>-C before the
+    program will recognize that SIGINT has been received and terminate.
+
+  ,----
+  | > make                          # build wc_signal program
+  | gcc -Wall -Werror -g  -c wc_signal.c
+  | gcc -Wall -Werror -g  -o wc_signal wc_signal.o
+  |
+  | > seq 10 | ./wc_signal          # pipe 'seq' output to wc_signal
+  |
+  | 10 lines 10 words 21 chars      # input ends, reports amount read
+  |
+  | > yes | ./wc_signal             # pipe infinite 'y' output to wc_signal
+  |   C-c                           # send interrupt via Ctrl-c, output still reported
+  | 28725026 lines 28725027 words 57450053 chars
+  `----

@@ -1,0 +1,25 @@
+Linked List Demo
+Commands:
+  print:          shows the current contents of the list
+  clear:          eliminates all elements from the list
+  exit:           exit the program
+  insert thing:   inserts the given string into the list
+  size:           prints the size of the list
+  get index:      get the item at the given index
+  contains thing: determine if the given thing is in the list
+list> insert Mario
+list> insert Luigi
+list> insert Toad
+list> insert Bowser
+list> insert Peach
+list> contains Mario
+'Mario' is present
+list> contains Luigi
+'Luigi' is present
+list> contains Peach
+'Peach' is present
+list> contains Goomba
+Not found
+list> contains Bob-omb
+Not found
+list> exit

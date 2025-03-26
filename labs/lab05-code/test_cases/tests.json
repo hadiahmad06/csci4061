@@ -1,0 +1,21 @@
+{
+    "name": "Lab 05",
+    "tests": [
+        {
+            "name": "Quiz - QUESTIONS.txt",
+            "description": "Check if the answers in QUESTIONS.txt are correct. This file must be edited so that the correct ( ) choices are replaced with (X) and no other changes are made to the file.",
+            "command": "test_cases/resources/socrates QUESTIONS.txt -c test_cases/resources/quiz_sum.json -a",
+            "output_file": "test_cases/output/quiz.txt",
+            "points": 0.5
+        },
+        {
+            "name": "Code - tokenize_sentence",
+            "description": "Runs the tokenize_sentence program with a few different sample sentences to check for proper output.",
+            "command": "./tokenize_sentence",
+            "input_file": "test_cases/input/tokenize_sentence.txt",
+            "output_file": "test_cases/output/tokenize_sentence.txt",
+            "prompt": "sentence>",
+            "points": 0.5
+        }
+    ]
+}

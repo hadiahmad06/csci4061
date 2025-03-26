@@ -1,0 +1,26 @@
+$ seq 10 | ./wc_signal
+10 lines, 10 words, 21 chars
+$ ./wc_signal
+Hello, world!
+1 lines, 2 words, 14 chars
+$ ./wc_signal
+1 lines, 0 words, 0 chars
+$ ./wc_signal
+It was the best of times, it was the worst of times.
+It was the age of wisdom, it was the age of foolishness.
+It was the epoch of belief, it was the epoch of incredulity.
+It was the season of light, it was the season of darkness.
+4 lines, 48 words, 230 chars
+$ ./wc_signal
+Hello, world!
+2 lines, 2 words, 15 chars
+$ ./wc_signal
+1 lines, 0 words, 1 chars
+$ ./wc_signal
+It was the best of times, it was the worst of times.
+It was the age of wisdom, it was the age of foolishness.
+It was the epoch of belief, it was the epoch of incredulity.
+It was the season of light, it was the season of darkness.
+5 lines, 48 words, 231 chars
+$ exit
+exit

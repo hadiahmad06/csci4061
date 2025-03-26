@@ -1,0 +1,19 @@
+{
+    "name": "Lab 06",
+    "tests": [
+        {
+            "name": "Quiz - QUESTIONS.txt",
+            "description": "Check if the answers in QUESTIONS.txt are correct. This file must be edited so that the correct ( ) choices are replaced with (X) and no other changes are made to the file.",
+            "command": "test_cases/resources/socrates QUESTIONS.txt -c test_cases/resources/quiz_sum.json -a",
+            "output_file": "test_cases/output/quiz.txt",
+            "points": 0.5
+        },
+        {
+            "name": "Code - wc-signal",
+            "description": "Tests wc_signal to see if it shuts down properly. Executes the program multiple times. The first few runs do not use SIGINT, while the last several runs send SIGINT to the program and check if it terminates gracefully.",
+            "input_file": "test_cases/input/wc_signal.txt",
+            "output_file": "test_cases/output/wc_signal.txt",
+            "points": 0.5
+        }
+    ]
+}

@@ -1,0 +1,4 @@
+sentence> It was the best of times, it was the worst of times.
+sentence> To be, or not to be.
+sentence> Premature optimization is the root of all evil.
+sentence> exit

@@ -1,0 +1,27 @@
+$ seq 10 | ./wc_signal
+$ ./wc_signal
+Hello, world!
+^D
+$ ./wc_signal
+^D
+$ ./wc_signal
+It was the best of times, it was the worst of times.
+It was the age of wisdom, it was the age of foolishness.
+It was the epoch of belief, it was the epoch of incredulity.
+It was the season of light, it was the season of darkness.
+^D
+$ ./wc_signal
+Hello, world!
+^C
+
+$ ./wc_signal
+^C
+
+$ ./wc_signal
+It was the best of times, it was the worst of times.
+It was the age of wisdom, it was the age of foolishness.
+It was the epoch of belief, it was the epoch of incredulity.
+It was the season of light, it was the season of darkness.
+^C
+
+$ exit

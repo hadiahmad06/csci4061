@@ -1,0 +1,28 @@
+{
+    "name": "Lab 07",
+    "tests": [
+        {
+            "name": "Quiz - QUESTIONS.txt",
+            "description": "Check if the answers in QUESTIONS.txt are correct. This file must be edited so that the correct ( ) choices are replaced with (X) and no other changes are made to the file.",
+            "command": "test_cases/resources/socrates QUESTIONS.txt -c test_cases/resources/quiz_sum.json -a",
+            "output_file": "test_cases/output/quiz.txt",
+            "points": 0.5
+        },
+        {
+            "name": "Code - pipe_sum 1",
+            "description": "Runs the pipe_sum program on the file numbers.txt. Checks correctness of cumulative sums printed out by parent process.",
+            "command": "./pipe_sum test_cases/resources/numbers.txt",
+            "output_file": "test_cases/output/pipe_sum1.txt",
+            "use_valgrind": "y",
+            "points": 0.25
+        },
+        {
+            "name": "Code - pipe_sum 2",
+            "description": "Runs the pipe_sum program on the file numbers2.txt. Checks correctness of cumulative sums printed out by parent process.",
+            "command": "./pipe_sum test_cases/resources/numbers2.txt",
+            "output_file": "test_cases/output/pipe_sum2.txt",
+            "use_valgrind": "y",
+            "points": 0.25
+        }
+    ]
+}

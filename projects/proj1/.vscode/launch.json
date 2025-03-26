@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/andyphu/4061/csci4061-sp25/projects",
+      "program": "/Users/andyphu/4061/csci4061-sp25/projects/build/Debug/outDebug"
+    }
+  ]
+}

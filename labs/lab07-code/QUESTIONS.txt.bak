@@ -1,0 +1,98 @@
+                           __________________
+
+                            LAB 07 QUESTIONS
+                           __________________
+
+Lab Instructions
+================
+
+  Follow the instructions below to experiment with topics related to
+  this lab.
+  - For sections marked QUIZ, fill in an (X) for the appropriate
+    response in this file. Use the command 'make test-quiz' to see if
+    all of your answers are correct.
+  - For sections marked CODE, complete the code indicated. Use the
+    command 'make test-code' to check if your code is complete.
+  - DO NOT CHANGE any parts of this file except the QUIZ sections as it
+    may interfere with the tests otherwise.
+  - If your 'QUESTIONS.txt' file seems corrupted, restore it by copying
+    over the 'QUESTIONS.txt.bk' backup file.
+  - When you complete the exercises, check your answers with 'make test'
+    and if all is well, create a zip file with 'make zip' and upload it
+    to Gradescope. Ensure that the Autograder there reflects your local
+    results.
+  - IF YOU WORK IN A GROUP only one member needs to submit and then add
+    the names of their group.
+
+
+QUIZ Questions Shell Pipelines
+===================================
+
+  Which of the following is the best description of the shell command
+  'cat data.txt | sort'?
+  - ( ) This runs the 'cat' and 'sort' commands in parallel
+  - ( ) This provides the output of the 'cat' command as input to the
+        'sort' command.
+  - ( ) This is a shortcut to pass the same command-line argument 'data.txt'
+        to both the 'cat' and 'sort' commands.
+  - ( ) Trick question: This is not a valid shell command.
+
+  Which system calls are needed to support shell command pipelines?
+  - ( ) 'pipe()' and 'dup2()'
+  - ( ) 'pipe()' and 'open()'
+  - ( ) 'pipe()', 'dup2()', and 'fopen()'
+  - ( ) None of the above
+
+  Which of the following will print out the 10 largest numbers stored in the
+  file 'test_cases/resources/numbers.txt' (assuming each number is on its own
+  line)?
+  - ( ) 'sort test_cases/resources/numbers.txt -nr | head -n 10'
+  - ( ) 'sort test_cases/resources/numbers.txt -r | head -n 10'
+  - ( ) 'sort test_cases/resources/numbers.txt -n | tail -n 10'
+  - ( ) Answers 1 and 3 above both work
+  - ( ) None of the above
+
+  Which of the following is an easy way to count the approximate number of
+  files present in the current directory?
+  - ( ) ls -n
+  - ( ) wc .
+  - ( ) ls | wc
+  - ( ) ls -l | wc -l
+
+CODE Complete pipe_sum.c
+========================
+
+  Complete the code in 'pipe_sum.c', which forks a child process in its 'main()'
+  function. The child process should read in the text file specified as the
+  first command-line argument. The file will contain a list of numbers, each on
+  its own line. After reading each number, the child should send the cumulative
+  sum (the sum of all numbers read so far) to the parent process via a pipe.
+
+  The parent process should read in a number from the child, print this out,
+  and repeat until there is no more data from the child process.
+
+  For example, the contents of the text file 'numbers.txt' are:
+  ,----
+  | 4
+  | 8
+  | 15
+  | 16
+  | 23
+  | 42
+  | 108
+  `----
+
+  A correct run of the 'pipe_sum' with this file as input would be:
+  ,----
+  | > make                          # build pipe_sum program
+  | gcc -Wall -Werror -g  -o pipe_sum pipe_sum.c
+  |
+  | > ./pipe_sum numbers.txt        # Run 'pipe_sum' on numbers.txt
+  | Cumulative Sum: 4
+  | Cumulative Sum: 12
+  | Cumulative Sum: 27
+  | Cumulative Sum: 43
+  | Cumulative Sum: 66
+  | Cumulative Sum: 108
+  | Cumulative Sum: 216
+  `----

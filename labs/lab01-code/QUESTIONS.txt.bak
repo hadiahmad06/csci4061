@@ -1,0 +1,126 @@
+                           __________________
+
+                            LAB 01 QUESTIONS
+                           __________________
+
+Lab Instructions
+================
+
+  Follow the instructions below to complete this lab assignment.
+  - For sections marked CODE, complete the code indicated. Use the
+    command 'make test-code' to check if your code is complete.
+  - For sections marked QUIZ, fill in an (X) for the appropriate
+    response in this file. Use the command 'make test-quiz' to see if
+    all of your answers are correct.
+  - DO NOT CHANGE any parts of this file except the QUIZ sections as it
+    may interfere with the tests otherwise.
+  - If your 'QUESTIONS.txt' file seems corrupted, restore it by copying
+    over the 'QUESTIONS.txt.bak' backup file.
+  - When you complete the exercises, check your answers with 'make test'
+    and if all is well, create a zip file with 'make zip' and upload it
+    to Gradescope. Ensure that the autograder results there reflect your
+    local results.
+  - IF YOU WORK IN A GROUP only one member needs to submit and then add
+    the names of their group.
+
+
+Linked List Application
+=======================
+
+QUIZ Build Commands
+~~~~~~~~~~~~~~~~~~~
+
+  After downloading and unzipping the lab code, TAs will demonstrate how
+  to compile the 'list_main' application using a provided 'Makefile' and
+  the command 'make'. They will demonstrate how to run several other
+  useful commands via 'make'. These are as follows:
+
+  To remove all the compiled files (executable programs and '.o' files),
+  use `make' as follows:
+  - ( ) make sanitize
+  - ( ) make clean
+  - ( ) make remove
+  - ( ) make gc
+
+  To run ALL the automated tests for the code through the given
+  'Makefile' use the following command
+  - ( ) make test
+  - ( ) make verify
+  - ( ) make examine
+  - ( ) make unit
+
+  Note: the default is to run all tests and you may need to specify WHAT
+  to test, like a quiz, code, or an individual problem.
+
+  To run only test case #2, use the following 'make' command:
+  - ( ) make test2
+  - ( ) make test 2
+  - ( ) make unit test=2
+  - ( ) make test testnum=2
+
+  If I change code and want to see if any more tests pass after the
+  change, I should type
+  - ( ) 'make' to rebuild followed by 'make test' to run tests
+  - ( ) 'make clean' followed by 'make' followed by 'make test'
+  - ( ) 'make test' will rebuild based on changes AND then run tests
+  - ( ) ALL of these will work but `make test' is the shortest and
+    sweetest.
+
+  Study the 'list.o' target in the provided Makefile. What does it mean
+  that we see 'list.h' and 'list.c' listed after the target's name?
+  - ( ) 'list.h' and 'list.c' are subtargets of the 'list.o' target.
+  - ( ) 'list.h' and 'list.c' are deleted when 'list.o' is compiled.
+  - ( ) 'list.h' and 'list.c' are dependencies for this target. 'list.o' will
+        be recompiled if either 'list.h' or 'list.c' is modified.
+  - ( ) There is no 'list.o' target in the provided Makefile.
+
+  Since compiling C programs involving several files is a bit painful,
+  we will provide a 'Makefile' on all of the course projects and the
+  conventions outlined here will be followed to make life easier.
+  Importantly, **passing automated tests will be part of project
+  grades** so make sure you know how to run the tests.
+
+
+CODE for Linked List Application
+================================
+
+  This lab's code pack contains an application featuring a linked list. The
+  code is divided into an interactive 'main()' function in 'list_main.c' and
+  a linked list implementation in 'list.h' and 'list.c'.
+  You are encouraged to *study this program carefully* because it
+  demonstrates MANY common and useful techniques used in C.
+
+  While the command-line interface in 'list_main.c' is already implemented for
+  you, the linked list data structure is not.
+
+  The objective is to complete the code in 'list.c' so all the related tests
+  pass:
+  ,----
+  | > make test-code
+  | == Lab 01
+  | == Running 4/5 tests
+  | Test 2) List - Print and Exit: Passed
+  | Test 3) List - Insert 3 and Print: Passed
+  | Test 4) List - Get Command: Passed
+  | Test 5) List - Contains Items: Passed
+  |
+  | Ran 4/4 Requested Tests
+  | Passed 4/4 Tests
+  | Total Score: 0.5/0.5
+  `----
+
+  With the starter code, you should be able to compile and run the tests. Most
+  will fail but runnable tests are the first step to victory.
+  ,----
+  | > make test-code
+  | == Lab 01
+  | == Running 4/5 tests
+  | Test 2) List - Print and Exit: Passed
+  | Test 3) List - Insert 3 and Print: Failed -> Results in test_results/lab_01-3-results.tmp
+  | Test 4) List - Get Command: Failed -> Results in test_results/lab_01-4-results.tmp
+  | Test 5) List - Contains Items: Failed -> Results in test_results/lab_01-5-results.tmp
+  |
+  | Ran 4/4 Requested Tests
+  | Passed 1/4 Tests
+  | Total Score: 0.125/0.5
+  `----
